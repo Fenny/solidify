@@ -53,6 +53,7 @@ echo "IPV6=no" | sudo tee -a /etc/default/ufw
 echo "net.ipv6.conf.lo.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf
 echo "net.ipv6.conf.all.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf
 echo "net.ipv6.conf.default.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf
+echo "net.ipv6.conf.ens3.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf
 
 echo "GRUB_CMDLINE_LINUX_DEFAULT=\"ipv6.disable=1 quiet splash\"" | sudo tee -a /etc/default/grub
 ```
