@@ -1,6 +1,7 @@
 # Solidify
 Hardening Ubuntu 20.04
 
+![](https://i.imgur.com/af8ZjFk.gif)
 
 ### System updates
 Keeping the system updated is vital before starting anything on your system. This will prevent people to use known vulnerabilities to enter in your system.
