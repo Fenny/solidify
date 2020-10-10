@@ -102,10 +102,12 @@ _header "Network"
 
     _cmd "disable ipv6 sysctl" 'sudo sed -i "/net.ipv6.conf.lo.disable_ipv6/Id" /etc/sysctl.d/99-sysctl.conf' && \
     _cmd "" 'sudo sed -i "/net.ipv6.conf.all.disable_ipv6/Id" /etc/sysctl.d/99-sysctl.conf' && \
-    _cmd "" 'sudo sed -i "/net.ipv6.conf.default.disable_ipv6/Id" /etc/sysctl.d/99-sysctl.conf'
+    _cmd "" 'sudo sed -i "/net.ipv6.conf.default.disable_ipv6/Id" /etc/sysctl.d/99-sysctl.conf' && \
+    _cmd "" 'sudo sed -i "/net.ipv6.conf.ens3.disable_ipv6/Id" /etc/sysctl.d/99-sysctl.conf'
     _cmd "" 'echo "net.ipv6.conf.lo.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf' && \
     _cmd "" 'echo "net.ipv6.conf.all.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf' && \
-    _cmd "" 'echo "net.ipv6.conf.default.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf'
+    _cmd "" 'echo "net.ipv6.conf.default.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf' && \
+    _cmd "" 'echo "net.ipv6.conf.ens3.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf'
 
     _cmd "disable ipv6 ufw" 'sudo sed -i "/ipv6=/Id" /etc/default/ufw' && \
     _cmd "" 'sudo echo "IPV6=no" | sudo tee -a /etc/default/ufw'
@@ -125,7 +127,7 @@ _header "Network"
     _cmd "" 'sudo echo "net.ipv4.tcp_max_syn_backlog = 2048" | sudo tee -a /etc/sysctl.conf' && \
     _cmd "" 'sudo echo "net.ipv4.tcp_synack_retries = 2" | sudo tee -a /etc/sysctl.conf' && \
     _cmd "" 'sudo echo "net.ipv4.tcp_syn_retries = 5" | sudo tee -a /etc/sysctl.conf' && \
-    _cmd "" 'sudo echo "#net.ipv4.tcp_syncookies = 1" | sudo tee -a /etc/sysctl.conf'
+    _cmd "" 'sudo echo "net.ipv4.tcp_syncookies = 0" | sudo tee -a /etc/sysctl.conf'
 
 _header "NTP"
     _cmd "disable ntp.ubuntu.com" 'sudo sed -i "/NTP=/Id" /etc/systemd/timesyncd.conf' && \
