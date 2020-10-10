@@ -75,8 +75,10 @@ _header "Dependencies"
 
 _header "Firewall"
     _cmd "disable ufw" 'sudo ufw disable' && \
-    _cmd "reset rules" 'echo "y" | sudo ufw reset'
+    _cmd "reset rules" 'echo "y" | sudo ufw reset' && \
     _cmd "disable logging" 'sudo ufw logging off' && \
+    _cmd "deny incoming" 'sudo ufw default deny incoming' && \
+    _cmd "allow outgoing" 'sudo ufw default allow outgoing' && \
     _cmd "allow 80/tcp" 'sudo ufw allow 80/tcp' && \
     _cmd "allow 443/tcp" 'sudo ufw allow 443/tcp'
     printf "  ${YELLOW}─ Specify SSH port [default 22]: ${RESET}"
@@ -90,7 +92,6 @@ _header "Firewall"
         _clearline
         _cmd "allow 22/tcp" 'sudo ufw allow 22/tcp'
     fi
-
     _cmd "enable ufw" 'sudo ufw --force enable'
 
 
