@@ -32,6 +32,8 @@ We reset all firewall rules and only add port `80`, `443` and custom SSH port ( 
 sudo ufw disable
 sudo ufw reset
 sudo ufw logging off
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 sudo ufw allow <promt_ssh_port>/tcp
