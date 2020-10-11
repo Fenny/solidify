@@ -7,7 +7,7 @@ bash <(wget -qO- https://raw.githubusercontent.com/fenny/solidify/main/solidify.
 
 ![](https://i.imgur.com/af8ZjFk.gif)
 
-### System updates
+### Updates
 Keeping the system updated is vital before starting anything on your system. This will prevent people to use known vulnerabilities to enter in your system.
 
 ```bash
@@ -24,6 +24,7 @@ Installing and updating packages that are required for hardening.
 sudo apt-get install wget
 sudo apt-get install ufw
 sudo apt-get install sed
+sudo apt-get install git
 ```
 
 ### Firewall
@@ -50,10 +51,9 @@ Disabling IPv6 in both sysctl, ufw and grub
 ```bash
 echo "IPV6=no" | sudo tee -a /etc/default/ufw
 
-echo "net.ipv6.conf.lo.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf
-echo "net.ipv6.conf.all.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf
-echo "net.ipv6.conf.default.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf
-echo "net.ipv6.conf.ens3.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf
+echo "net.ipv6.conf.lo.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf
+echo "net.ipv6.conf.all.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf
+echo "net.ipv6.conf.default.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf
 
 echo "GRUB_CMDLINE_LINUX_DEFAULT=\"ipv6.disable=1 quiet splash\"" | sudo tee -a /etc/default/grub
 ```
@@ -76,8 +76,8 @@ echo "NTP=time.cloudflare.com" | sudo tee -a /etc/systemd/timesyncd.conf
 echo "FallbackNTP=ntp.ubuntu.com" | sudo tee -a /etc/systemd/timesyncd.conf
 ```
 
-### System logs
-This will disable system logs and hide kernel pointers
+### System
+This will disable system logs, hide kernel pointers and ignore empty ssh passwords
 ```bash
 echo "kernel.dmesg_restrict=1" | sudo tee -a /etc/sysctl.conf
 echo "kernel.kptr_restrict=2" | sudo tee -a /etc/sysctl.conf
