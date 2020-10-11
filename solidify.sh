@@ -59,10 +59,10 @@ function _clearline {
     printf "\e[1A\e[K"
 }
 
-printf "\n${BLUE} Ubuntu Hardening ${VERSION} ${RESET}\n"
+printf "\n${BLUE} Ubuntu 20.04 Hardening ${VERSION} ${RESET}\n"
 
 
-_header "System"
+_header "Updates"
     _cmd "update" 'sudo apt-get update -y' && \
     _cmd "upgrade" 'sudo apt-get full-upgrade -y'
     _cmd "autoremove" "sudo apt-get autoremove"
@@ -72,6 +72,7 @@ _header "Dependencies"
     _cmd "install wget" 'sudo apt-get install wget -y'
     _cmd "install ufw" 'sudo apt-get install ufw -y'
     _cmd "install sed" 'sudo apt-get install sed -y'
+    _cmd "install git" 'sudo apt-get install git -y'
 
 _header "Firewall"
     _cmd "disable ufw" 'sudo ufw disable' && \
@@ -87,7 +88,7 @@ _header "Firewall"
         _clearline
         _cmd "allow ${prompt}/tcp" 'sudo ufw allow ${prompt}/tcp'
         _cmd "update sshd config" 'sudo sed -i "/Port /Id" /etc/ssh/sshd_config' && \
-        _cmd "" 'sudo echo "Port ${prompt}" | sudo tee -a /etc/ssh/sshd_config'
+        _cmd "" 'echo "Port ${prompt}" | sudo tee -a /etc/ssh/sshd_config'
     else 
         _clearline
         _cmd "allow 22/tcp" 'sudo ufw allow 22/tcp'
@@ -97,44 +98,44 @@ _header "Firewall"
 
 _header "Network"
     _cmd "enable cloudflare ns" 'sudo sed -i "/nameserver /Id" /etc/resolv.conf' && \
-    _cmd "" 'sudo echo "nameserver 1.1.1.1" | sudo tee -a /etc/resolv.conf' && \
-    _cmd "" 'sudo echo "nameserver 1.0.0.1" | sudo tee -a /etc/resolv.conf'
+    _cmd "" 'echo "nameserver 1.1.1.1" | sudo tee -a /etc/resolv.conf' && \
+    _cmd "" 'echo "nameserver 1.0.0.1" | sudo tee -a /etc/resolv.conf'
 
-    _cmd "disable ipv6 sysctl" 'sudo sed -i "/net.ipv6.conf.lo.disable_ipv6/Id" /etc/sysctl.d/99-sysctl.conf' && \
-    _cmd "" 'sudo sed -i "/net.ipv6.conf.all.disable_ipv6/Id" /etc/sysctl.d/99-sysctl.conf' && \
-    _cmd "" 'sudo sed -i "/net.ipv6.conf.default.disable_ipv6/Id" /etc/sysctl.d/99-sysctl.conf' && \
-    _cmd "" 'sudo sed -i "/net.ipv6.conf.ens3.disable_ipv6/Id" /etc/sysctl.d/99-sysctl.conf'
-    _cmd "" 'echo "net.ipv6.conf.lo.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf' && \
-    _cmd "" 'echo "net.ipv6.conf.all.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf' && \
-    _cmd "" 'echo "net.ipv6.conf.default.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf' && \
-    _cmd "" 'echo "net.ipv6.conf.ens3.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf'
+    _cmd "disable ipv6 sysctl" 'sudo sed -i "/net.ipv6.conf.lo.disable_ipv6/Id" /etc/sysctl.conf' && \
+    _cmd "" 'sudo sed -i "/net.ipv6.conf.all.disable_ipv6/Id" /etc/sysctl.conf' && \
+    _cmd "" 'sudo sed -i "/net.ipv6.conf.default.disable_ipv6/Id" /etc/sysctl.conf'
+    _cmd "" 'echo "net.ipv6.conf.lo.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf' && \
+    _cmd "" 'echo "net.ipv6.conf.all.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf' && \
+    _cmd "" 'echo "net.ipv6.conf.default.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf'
 
     _cmd "disable ipv6 ufw" 'sudo sed -i "/ipv6=/Id" /etc/default/ufw' && \
-    _cmd "" 'sudo echo "IPV6=no" | sudo tee -a /etc/default/ufw'
+    _cmd "" 'echo "IPV6=no" | sudo tee -a /etc/default/ufw'
 
     _cmd "disable ipv6 grub" 'sudo sed -i "/GRUB_CMDLINE_LINUX_DEFAULT=/Id" /etc/default/grub' && \
-    _cmd "" 'sudo echo "GRUB_CMDLINE_LINUX_DEFAULT=\"ipv6.disable=1 quiet splash\"" | sudo tee -a /etc/default/grub'
+    _cmd "" 'echo "GRUB_CMDLINE_LINUX_DEFAULT=\"ipv6.disable=1 quiet splash\"" | sudo tee -a /etc/default/grub'
 
     _cmd "ignore icmp echo" 'sudo sed -i "/net.ipv4.icmp_echo_ignore_/Id" /etc/sysctl.conf' && \
-    _cmd "" 'sudo echo "net.ipv4.icmp_echo_ignore_broadcasts = 1" | sudo tee -a /etc/sysctl.conf' && \
-    _cmd "" 'sudo echo "net.ipv4.icmp_echo_ignore_all = 1" | sudo tee -a /etc/sysctl.conf' && \
+    _cmd "" 'echo "net.ipv4.icmp_echo_ignore_broadcasts = 1" | sudo tee -a /etc/sysctl.conf' && \
+    _cmd "" 'echo "net.ipv4.icmp_echo_ignore_all = 1" | sudo tee -a /etc/sysctl.conf' && \
     _cmd "" 'echo 1 | sudo tee /proc/sys/net/ipv4/icmp_echo_ignore_all'
 
     _cmd "block syn attacks" 'sudo sed -i "/net.ipv4.tcp_max_syn_backlog/Id" /etc/sysctl.conf' && \
     _cmd "" 'sudo sed -i "/net.ipv4.tcp_synack_retries/Id" /etc/sysctl.conf' && \
     _cmd "" 'sudo sed -i "/net.ipv4.tcp_syn_retries/Id" /etc/sysctl.conf' && \
     _cmd "" 'sudo sed -i "/net.ipv4.tcp_syncookies/Id" /etc/sysctl.conf' && \
-    _cmd "" 'sudo echo "net.ipv4.tcp_max_syn_backlog = 2048" | sudo tee -a /etc/sysctl.conf' && \
-    _cmd "" 'sudo echo "net.ipv4.tcp_synack_retries = 2" | sudo tee -a /etc/sysctl.conf' && \
-    _cmd "" 'sudo echo "net.ipv4.tcp_syn_retries = 5" | sudo tee -a /etc/sysctl.conf' && \
-    _cmd "" 'sudo echo "net.ipv4.tcp_syncookies = 0" | sudo tee -a /etc/sysctl.conf'
+    _cmd "" 'echo "net.ipv4.tcp_max_syn_backlog = 2048" | sudo tee -a /etc/sysctl.conf' && \
+    _cmd "" 'echo "net.ipv4.tcp_synack_retries = 2" | sudo tee -a /etc/sysctl.conf' && \
+    _cmd "" 'echo "net.ipv4.tcp_syn_retries = 5" | sudo tee -a /etc/sysctl.conf' && \
+    _cmd "" 'echo "net.ipv4.tcp_syncookies = 0" | sudo tee -a /etc/sysctl.conf'
 
 _header "NTP"
     _cmd "disable ntp.ubuntu.com" 'sudo sed -i "/NTP=/Id" /etc/systemd/timesyncd.conf' && \
     _cmd "enable time.cloudflare.com" 'echo "NTP=time.cloudflare.com" | sudo tee -a /etc/systemd/timesyncd.conf' && \
     _cmd "" 'echo "FallbackNTP=ntp.ubuntu.com" | sudo tee -a /etc/systemd/timesyncd.conf'
 
-_header "System logs"
+_header "System"
+    _cmd "disable empty ssh pass" 'sudo sed -i "/PermitEmptyPasswords/Id" /etc/ssh/sshd_config' && \
+    _cmd "" 'echo "PermitEmptyPasswords no" | sudo tee -a /etc/ssh/sshd_config'
     _cmd "disable sysctl logs" 'sudo sed -i "/kernel.dmesg_restrict/Id" /etc/sysctl.conf' && \
     _cmd "" 'echo "kernel.dmesg_restrict=1" | sudo tee -a /etc/sysctl.conf'
     _cmd "disable rsyslog" 'sudo systemctl stop syslog.socket rsyslog.service' && \
